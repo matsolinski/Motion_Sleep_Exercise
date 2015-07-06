@@ -11,7 +11,7 @@
   
 %---- sleep_phases.csv
 
-  fid = fopen('sleep_phases2.csv');
+  fid = fopen('sleep_phases.csv');
       outSP = textscan(fid,'%s%f','delimiter',',');
   fclose(fid);
 
@@ -97,27 +97,35 @@
 %----- motion vector denoising
 
   alignedSig(:,3)=alignedSig(:,2)>thresh;
+
+
+%----- create vectors of bins
+
+  numberOfIntervals=200;
+  numberOfBins=floor(length(alignedSig)/numberOfIntervals);
+  
+  BinVector=zeros(numberOfBins,2);
+  motionBinVector=reshape(alignedSig(1:numberOfBins*numberOfIntervals,3),[numberOfIntervals,numberOfBins]);
+  motionBinVectorSum=sum(motionBinVector,1);
+  size(motionBinVectorSum)
+  
+  sleepchangeBinVector=reshape(alignedSig(1:numberOfBins*numberOfIntervals,5),[numberOfIntervals,numberOfBins]);
+  sleepchangeBinVectorSum=sum(sleepchangeBinVector,1);
+%  for i=1:numberOfIntervals:numberOfIntervals*numberOfBins
+%  
+%    motionBinVectorSum=[motionBinVectorSum ; sum(alignedSig(i:i+numberOfIntervals-1,3))];
+%%    motionBinVector(i,1)=sum(alignedSig(i:i+numberOfIntervals-1,3));
+%%    motionBinVector(i,2)=sum(alignedSig(i:i+numberOfIntervals-1,5));
+%   
+%  end
+
   
 %----- print
 
 
 show=1;
 if(show)
-%  figure(1)
-%    subplot(4,1,1)
-%      plot(Xacc);
-%      title('Accelerometer X-axis');
-%    subplot(4,1,2)
-%      plot(Yacc)
-%      title('Accelerometer Y-axis');
-%    subplot(4,1,3)
-%      plot(Zacc)
-%      title('Accelerometer Z-axis');
-%    subplot(4,1,4)
-%      plot(sleepP)
-%      title('Sleep Phases'); 
-     
-%   n=1:length( alignedSig );
+
    figure(3)
    subplot(4,1,1)
      plot(alignedSig(:,2)); hold on;
@@ -137,5 +145,15 @@ if(show)
    subplot(4,1,4)
      plot(alignedSig(:,5));
      axis([-inf inf 0 1.2]);
-     title('sleep phase changes')    
+     title('sleep phase changes')
+ 
+
+  figure(4)
+  bar(motionBinVectorSum); hold on;
+  plot(sleepchangeBinVectorSum, 'r-'); hold off;
+%  plot(motionBinVector(:,2),'r-'); hold off;
+  set(gca,'xtick',[])
+  set(gca,'xticklabel',[]) 
+  legend('Motion data (binned)','Sleep change data (binned)','location','northwest');
+  
 end
