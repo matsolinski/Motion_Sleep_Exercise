@@ -1,7 +1,7 @@
-function [inxSig1, inxSig2] = alignSignals(timestampSig1,timestampSig2,option)
+function [inxSig1, inxSig2] = alignSignals(timestampSig1,timestampSig2,formatIn,option)
 
     warning off;
-    formatIn = '%Y-%m-%d %H:%M:%S';
+%    formatIn = '%Y-%m-%d %H:%M:%S';
 
     if(strcmp(option,'end')) %invert signal
       timestampSig1=timestampSig1(end:-1:1);
