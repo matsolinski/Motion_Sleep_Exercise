@@ -1,7 +1,10 @@
 function [inxSig1, inxSig2] = alignSignals(timestampSig1,timestampSig2,formatIn,option)
+% subsidiary function for aligning signals each other
+% this function is prepared both for situation where motion signal started (ended) earlier or started (end) later 
+
 
     warning off;
-%    formatIn = '%Y-%m-%d %H:%M:%S';
+
 
     if(strcmp(option,'end')) %invert signal
       timestampSig1=timestampSig1(end:-1:1);
@@ -43,7 +46,7 @@ function [inxSig1, inxSig2] = alignSignals(timestampSig1,timestampSig2,formatIn,
     
     end
     
-    %find the same time as secToFindInSecond in the signal started later or ended earlier
+    %find the same time as secToFindInSecond in the signal started later (or ended earlier)
     for o=1:length(secondSig);
     
        [tm_structSecond]=strptime(secondSig{o}, formatIn);
