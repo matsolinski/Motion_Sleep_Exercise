@@ -57,20 +57,24 @@ function [inxSig1, inxSig2] = alignSignals(timestampSig1,timestampSig2,option)
     %get indexes for align signals
     if(strcmp(option,'begin') )
       if( sig1BegInSec < sig2BegInSec )
-        inxSig1=firstInx;
-        inxSig2=secondInx;
+        inxSig1=firstInx-1;
+%        inxSig2=secondInx; 
+        inxSig2=1;
       else
-        inxSig1=secondInx;
-        inxSig2=firstInx;
+%        inxSig1=secondInx;
+        inxSig1=1;
+        inxSig2=firstInx-1;
       end
     end
     
     if(strcmp(option,'end') )
       if( sig1BegInSec > sig2BegInSec )
         inxSig1= length(firstSig) + 1 - firstInx;
-        inxSig2= length(secondSig) + 1 - secondInx;
+%        inxSig2= length(secondSig) + 1 - secondInx;
+        inxSig2= length(secondSig);
       else
         inxSig1= length(secondSig) + 1 - secondInx;
+        inxSig1= length(secondSig) ;
         inxSig2= length(firstSig) + 1 - firstInx;
       end
     end
